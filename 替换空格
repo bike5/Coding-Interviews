@@ -1,0 +1,35 @@
+/*请实现一个函数，将一个字符串中的空格替换成“%20”。例如，当字符串为We Are Happy.则经过替换之后的字符串为We%20Are%20Happy。
+思路：找出空格的个数，计算出新字符串的长度
+      一、从前向后扫描，遇到空格，将空格后元素的往后移动，替换
+      二、从后往前扫描，遇到空格替换
+      方法二效率更高
+      步骤：1、扫描字符串，找出空格的个数，计算替换后的字符串总长度
+            2、定义两个指针1、2，分别指向原字符串最后一个元素和新字符串最后一个元素
+            3、字符串向前扫描，指针1遇到空格时，指针2接下来的三个位置上放置“20%”，否则防止指针1的元素
+            
+*/
+public class Solution {
+    public String replaceSpace(StringBuffer str) {
+        if (str.length() == 0) return str.toString();
+        int blankCount = 0;//空格个数
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == ' ') blankCount++;
+        }
+        int oldLen = str.length(), newLen = oldLen + blankCount * 2;//原字符串长度、新字符串长度
+        int indexOld = oldLen - 1, indexNew = newLen - 1;//指针1、2
+        str.setLength(newLen);
+        while (indexOld >= 0 && indexOld < indexNew) {
+            if (str.charAt(indexOld) == ' ') {
+                str.setCharAt(indexNew--, '0');
+                str.setCharAt(indexNew--, '2');
+                str.setCharAt(indexNew--, '%');
+            } else {
+                str.setCharAt(indexNew--, str.charAt(indexOld));
+            }
+            indexOld--;
+        }
+        
+        return str.toString();
+    	
+    }
+}
