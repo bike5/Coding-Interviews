@@ -1,0 +1,42 @@
+#树的子结构
+/*输入两棵二叉树A，B，判断B是不是A的子结构。（ps：我们约定空树不是任意一个树的子结构）
+思路：若有一个为null，返回false
+      若树1当前节点和树2当前节点相同，使用子函数帮助判断树2是否为树1子树，否则递归判断树1当前节点的右子节点和左子节点，若任意一个返回true，结果为
+      true;
+*/
+/**
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+
+    public TreeNode(int val) {
+        this.val = val;
+
+    }
+
+}
+*/
+public class Solution {
+    public boolean HasSubtree(TreeNode root1,TreeNode root2) {
+        boolean res = false;
+        if (root1 != null && root2 != null) {
+            if (root1.val == root2.val) {
+                res = isOrNoSubtree(root1, root2);
+            }
+            if (!res) {
+                res = HasSubtree(root1.left, root2);
+            }
+            if (!res) {
+                res = HasSubtree(root1.right, root2);
+            }
+        }
+        return res;
+    }
+    public boolean isOrNoSubtree(TreeNode root1,TreeNode root2) {
+        if (root2 == null) return true;
+        if (root1 == null) return false;
+        if (root1.val != root2.val) return false;
+        return isOrNoSubtree(root1.left, root2.left) && isOrNoSubtree(root1.right, root2.right);
+    }
+}
