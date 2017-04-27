@@ -1,0 +1,50 @@
+/*题目描述:
+      输入n个整数，找出其中最小的K个数。例如输入4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4。
+  思路1：
+       快排的思想
+  思路2：
+      创建k大小的最大堆，将剩下的元素一个个和堆顶元素比较，大于堆顶元素，继续，小于堆顶元素，和堆顶元素交换
+      
+*/
+
+
+
+
+import java.util.ArrayList;
+public class Solution {
+    public ArrayList<Integer> GetLeastNumbers_Solution(int [] input, int k) {
+        ArrayList<Integer> res = new ArrayList<>();
+        if (input == null || input.length == 0 || k <= 0 || k > input.length) return res;
+        for (int i = k / 2 - 1; i >= 0; i--) {
+            adjustMaxHeap(input, i, k);
+        }
+        for (int i = k; i < input.length; i++) {
+            if (input[i] < input[0]) {
+                int tmp = input[i];
+                input[i] = input[0];
+                input[0] = tmp;
+                adjustMaxHeap(input, 0, k);
+            }
+        }
+        for (int i = 0; i < k; i++) {
+            res.add(input[i]);
+        }
+        return res;
+    }
+    
+     public void adjustMaxHeap(int[] input, int index, int len) {
+        int child;
+        int tmp;
+        for (tmp = input[index]; 2 * index + 1 < len; index = child) {
+            child = 2 * index + 1;
+            if (child + 1 < len) {
+                child = input[child] > input[child + 1] ? child : child + 1;
+            }
+            if (tmp < input[child]) {
+                input[index] = input[child];
+            } else break;
+        }
+        input[index] = tmp;
+    }
+    
+}
