@@ -1,0 +1,30 @@
+/*题目描述:
+        把只包含素因子2、3和5的数称作丑数（Ugly Number）。例如6、8都是丑数，但14不是，因为它包含因子7。 
+        习惯上我们把1当做是第一个丑数。求按从小到大的顺序的第N个丑数。
+思路：
+    1、使用数组保存丑数
+    2、第一个丑数是1
+    3、下一个丑数必定是2的倍数、3的倍数、5的倍数中小的那个
+    4、下个丑数选定后，倍数+1
+*/
+public class Solution {
+    public int GetUglyNumber_Solution(int index) {
+        if (index < 1) return 0;
+        int[] res = new int[index];
+        res[0] = 1;
+        int j2 = 0, j3 = 0, j5 = 0;
+        for (int i = 1; i < index; i++) {
+            res[i] = minNum(res[j2] * 2, res[j3] * 3, res[j5] * 5);
+            if (res[i] == res[j2] * 2) j2++;
+            if (res[i] == res[j3] * 3) j3++;
+            if (res[i] == res[j5] * 5) j5++;
+        }
+        return res[i];
+    }
+    
+    public int minNum(int a, int b, int c) {
+      a = a < b ? a : b;
+      a = a < c ? a : c;
+      return a;
+    }
+}
