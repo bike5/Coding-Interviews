@@ -1,0 +1,23 @@
+/*题目描述:
+        在一个字符串(1<=字符串长度<=10000，全部由字母组成)中找到第一个只出现一次的字符,并返回它的位置。
+        如果字符串为空,返回-1
+  思路：
+      使用hash table存储各个元素的个数，遍历原数组，个数为1的返回
+*/
+public class Solution {
+    public int FirstNotRepeatingChar(String str) {
+        if (str == null) return -1;
+        int[] hash = new int[256];
+        int res = -1;
+        for (char c : str.toCharArray()) {
+            hash[c]++;
+        }
+        for (int i = 0; i < str.length(); i++) {
+           if (hash[str.charAt(i)] == 1) {
+               res = i;
+               break;
+           }
+        }
+        return res;
+    }
+}
