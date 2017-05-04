@@ -1,0 +1,23 @@
+/*题目描述:
+        输入一棵二叉树，判断该二叉树是否是平衡二叉树。
+  思路：
+      先判断左右子树是不是平衡的，若平衡再求出左右子树的深度，若深度之差大于1，则不平衡。
+      为了不重复计算，在判断左右子树是否平衡的过程中把深度计算出来，这样在对父结点进行平衡判断时就可以不用再重复计算左右子树的深度了。
+*/
+
+
+public class Solution {
+    public boolean IsBalanced_Solution(TreeNode root) {
+        
+        int flag = IsBalanced_SolutionHelper(root);
+        return flag != -1;
+    }
+    public int IsBalanced_SolutionHelper(TreeNode root) {
+        if (root == null) return 0;
+        int left = IsBalanced_SolutionHelper(root.left);
+        int right = IsBalanced_SolutionHelper(root.right);
+        if (left == -1 || right == -1) return -1;
+        if (Math.abs(left - right) > 1) return -1;
+        return Math.max(left, right) + 1;
+    }
+}
