@@ -1,0 +1,48 @@
+/*题目描述:
+        在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。
+        输入一个数组,求出这个数组中的逆序对的总数P。并将P对1000000007取模的结果输出。 即输出P%1000000007 
+  思路1：直接求解
+      顺序扫描整个数组，若当前元素大于其之后的元素，则构成一个逆序对，时间复杂度为O(n^2)
+  思路2：利用归并排序
+      将原数组分成两个子数组，首先统计两个子数组各自的逆序对，然后对子数组排序，统计排序子数组合并后数组的逆序对，三者之和便为整个数组的逆序对
+*/
+
+public class Solution {
+    public int InversePairs(int[] array) {
+        if (array == null || array.length == 0) return 0;
+        int start = 0, end = array.length - 1;
+        int[] tmp = new int[array.length];
+        return InversePairs(array, start, end, tmp);
+    }
+    public int InversePairs(int[] array, int start, int end, int[] tmp) {
+        if (start == end) return 0;
+        int mid = start + (end - start) / 2;
+        int left = InversePairs(array, start, mid, tmp) % 1000000007;
+        int right = InversePairs(array, mid + 1, end, tmp) % 1000000007;
+        int merge = InversePairsMerge(array, start, mid, end, tmp) % 1000000007;
+        return (left + right + merge) % 1000000007;
+    }
+    public int InversePairsMerge(int[] array, int start, int mid, int end, int[] tmp) {
+        int count = 0, index = start;
+        int leftStart = start, leftEnd = mid, rightStart = mid + 1, rightEnd = end;
+        while (leftStart <= leftEnd && rightStart <= rightEnd) {
+        	if (array[leftStart] > array[rightStart]) {
+                count += leftEnd - leftStart + 1;
+                count %= 1000000007;
+                tmp[index++] = array[rightStart++];
+            } else {
+                tmp[index++] = array[leftStart++];
+            }
+        }
+        while (leftStart <= leftEnd) {
+            tmp[index++] = array[leftStart++];
+        }
+        while (rightStart <= rightEnd) {
+            tmp[index++] = array[rightStart++];
+        }
+        for (int i = start; i <= end; i++) {
+            array[i] = tmp[i];
+        }
+        return count;
+    }
+}
